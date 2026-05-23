@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Task Planner</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
@@ -14,21 +14,37 @@
       </header>
 
       <div class="input-group">
-        <input type="text" id="todo-input" placeholder="What needs to be done?" autofocus/>
-
-        <input type="date" id="todo-date" aria-label="Select Target Task Date"/>
-
-        <input type="time" id="todo-start-time" class="time-picker" aria-label="Start Time"/>
-        
-        <input type="time" id="todo-end-time" class="time-picker" aria-label="End Time"/>
-        
+        <input
+          type="text"
+          id="todo-input"
+          placeholder="What needs to be done?"
+          autocomplete="off"
+          autofocus
+        />
+        <input
+          type="date"
+          id="todo-date"
+          aria-label="Select Target Task Date"
+        />
+        <input
+          type="time"
+          id="todo-start-time"
+          class="time-picker"
+          aria-label="Start Time"
+        />
+        <input
+          type="time"
+          id="todo-end-time"
+          class="time-picker"
+          aria-label="End Time"
+        />
         <button id="add-btn">Add Task</button>
       </div>
 
       <div class="controls-bar">
         <div class="filter-tabs">
           <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="active">Active</button> 
+          <button class="filter-btn" data-filter="active">Active</button>
           <button class="filter-btn" data-filter="completed">Completed</button>
         </div>
         <button id="toggle-all-btn">Collapse All</button>
@@ -38,20 +54,25 @@
       <div id="empty-state" class="empty-state" style="display: none;">
         No tasks found.
       </div>
+    </div>
 
-      <!-- Mini Scratchpad Popup Area -->
-      <div class="scratchpad-trigger" id="scratch-toggle">📋 Quick List</div>
-      <div class="scratchpad-drawer" id="scratch-drawer">
-        <div class="scratch-header">
-          <h3>Quick Checklist</h3>
-          <button id="scratch-close">&times;</button>
-        </div>
-        <div class="scratch-input-row">
-          <input type="text" id="scratch-item-input" placeholder="Add an item..."/>
-          <button id="scratch-add-btn">+</button>
-        </div>
-        <ul class="scratch-list" id="scratch-list-container"></ul>
+    <!-- Mini Scratchpad Popup Drawer -->
+    <div class="scratchpad-trigger" id="scratch-toggle">📋 Quick List</div>
+    <div class="scratchpad-drawer" id="scratch-drawer">
+      <div class="scratch-header">
+        <h3>Quick Checklist</h3>
+        <button id="scratch-close">&times;</button>
       </div>
+      <div class="scratch-input-row">
+        <input
+          type="text"
+          id="scratch-item-input"
+          placeholder="Add an item..."
+          autocomplete="off"
+        />
+        <button id="scratch-add-btn">+</button>
+      </div>
+      <ul class="scratch-list" id="scratch-list-container"></ul>
     </div>
 
     <script src="script.js"></script>
