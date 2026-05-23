@@ -66,7 +66,7 @@ header h1 {
 
 .input-group {
   display: grid;
-  grid-template-columns: 1fr 150px 105px 105px auto;
+  grid-template-columns: 1fr 150px 120px 120px auto;
   gap: 12px;
   align-items: center;
   margin-bottom: 25px;
@@ -116,7 +116,7 @@ header h1 {
 }
 
 #add-btn {
-  background: var(--btn-add-bg);........................................................................................
+  background: var(--btn-add-bg);
   color: #ffffff;
   border: none;
   padding: 0 20px;
@@ -170,19 +170,16 @@ header h1 {
   color: var(--text-main);
 }
 
-/* Understated Semantic Filter Coding */
 .filter-btn[data-filter="all"].active {
   color: #2563eb;
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
-
 .filter-btn[data-filter="active"].active {
   color: #b45309;
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
-
 .filter-btn[data-filter="completed"].active {
   color: #15803d;
   background: #ffffff;
@@ -237,42 +234,34 @@ header h1 {
   letter-spacing: 0.2px;
 }
 
-/* Clean, Readable Pastels mapping weekdays */
 .header-mon {
   background-color: #fee2e2;
   color: #991b1b;
 }
-
 .header-tue {
   background-color: #fef3c7;
   color: #92400e;
 }
-
 .header-wed {
   background-color: #e0f2fe;
   color: #075985;
 }
-
 .header-thu {
   background-color: #f3e8ff;
   color: #6b21a8;
 }
-
 .header-fri {
   background-color: #dcfce7;
   color: #166534;
 }
-
 .header-sat {
   background-color: #fae8ff;
   color: #86198f;
 }
-
 .header-sun {
   background-color: #e0e7ff;
   color: #3730a3;
 }
-
 .header-none {
   background-color: #f1f5f9;
   color: #475569;
@@ -396,7 +385,6 @@ header h1 {
   color: #94a3b8;
 }
 
-/* Action Buttons Area */
 .actions-wrapper {
   display: flex;
   gap: 4px;
@@ -427,7 +415,7 @@ header h1 {
   background: var(--danger-bg);
 }
 
-/* Inline Edit Form Layout */
+/* Inline Edit Form */
 .edit-mode-container {
   display: flex;
   flex-direction: column;
@@ -500,7 +488,6 @@ header h1 {
 .edit-save-btn:hover {
   background: #1d4ed8;
 }
-
 .edit-cancel-btn:hover {
   background: #cbd5e1;
 }
@@ -518,63 +505,6 @@ header h1 {
   margin-left: auto;
   margin-right: auto;
   background: #f8fafc;
-}
-
-@media (max-width: 950px) {
-  .input-group {
-    grid-template-columns: 1fr 140px;
-    gap: 12px;
-  }
-
-  #add-btn {
-    grid-column: span 2;
-    width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  #todo-sections-container {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-}
-
-@media (max-width: 580px) {
-  .input-group {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  #add-btn {
-    grid-column: span 1;
-  }
-
-  .controls-bar {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  #todo-date,
-  .time-picker,
-  #add-btn,
-  #toggle-all-btn {
-    width: 100%;
-  }
-
-  .todo-container {
-    padding: 15px;
-  }
-
-  .edit-meta-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .edit-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
 }
 
 /* --- Quick List Drawer System --- */
@@ -603,7 +533,6 @@ header h1 {
   position: fixed;
   bottom: 24px;
   right: -360px;
-  /* Completely hidden offscreen by default */
   width: 320px;
   height: 420px;
   background: var(--card-bg);
@@ -620,7 +549,6 @@ header h1 {
 
 .scratchpad-drawer.open {
   right: 24px;
-  /* Slides directly into view */
 }
 
 .scratch-header {
@@ -717,4 +645,55 @@ header h1 {
 
 .scratch-delete:hover {
   color: var(--danger);
+}
+
+@media (max-width: 950px) {
+  .input-group {
+    grid-template-columns: 1fr 140px;
+    gap: 12px;
+  }
+  #add-btn {
+    grid-column: span 2;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  #todo-sections-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 580px) {
+  .input-group {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .time-picker,
+  #add-btn {
+    grid-column: span 1;
+  }
+  .controls-bar {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+  #todo-date,
+  .time-picker,
+  #add-btn,
+  #toggle-all-btn {
+    width: 100%;
+  }
+  .todo-container {
+    padding: 15px;
+  }
+  .edit-meta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .edit-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
