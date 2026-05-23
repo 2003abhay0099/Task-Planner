@@ -8,11 +8,13 @@ const emptyState = document.getElementById("empty-state");
 const filterBtns = document.querySelectorAll(".filter-btn");
 const toggleAllBtn = document.getElementById("toggle-all-btn");
 
+// Application State
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 let currentFilter = "all";
 let collapsedDates = [];
-let editingTodoId = null; // Track which specific item is in edit state
+let editingTodoId = null;
 
+// Core LocalStorage Sync Functions
 function saveToLocalStorage() {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
@@ -59,6 +61,32 @@ function formatTime12H(timeString) {
   const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12 || 12;
   return `${String(hours).padStart(2, "0")}:${minStr} ${ampm}`;
+}
+
+// New Duration Calculator Helper
+function calculateDurationText(start, end) {
+  if (!start || !end) return "";
+
+  const [startH, startM] = start.split(":").map(Number);
+  const [endH, endM] = end.split(":").map(Number);
+
+  let startMinutes = startH * 60 + startM;
+  let endMinutes = endH * 60 + endM;
+
+  // Handle cross-midnight calculations gracefully (e.g., 11:00 PM to 1:00 AM)
+  if (endMinutes < startMinutes) {
+    endMinutes += 24 * 60;
+  }
+
+  const diff = endMinutes - startMinutes;
+  const hours = Math.floor(diff / 60);
+  const mins = diff % 60;
+
+  let output = [];
+  if (hours > 0) output.push(`${hours} ${hours === 1 ? "hr" : "hrs"}`);
+  if (mins > 0) output.push(`${mins} ${mins === 1 ? "min" : "mins"}`);
+
+  return output.length > 0 ? `(${output.join(" ")})` : "(0 mins)";
 }
 
 function getActiveUniqueDates() {
@@ -160,7 +188,6 @@ function renderTodos() {
       const li = document.createElement("li");
       li.className = `todo-item ${todo.completed ? "completed" : ""}`;
 
-      // RENDER EDIT STATE IF ACTIVE FOR THIS ITEM
       if (editingTodoId === todo.id) {
         li.style.background = "var(--edit-bg)";
         li.style.borderColor = "var(--input-focus)";
@@ -215,7 +242,6 @@ function renderTodos() {
           renderTodos();
         });
 
-        // Allow pressing enter inside text field to commit save smoothly
         textInput.addEventListener("keypress", e => {
           if (e.key === "Enter")
             commitEdit(
@@ -239,10 +265,8 @@ function renderTodos() {
         editForm.appendChild(metaRow);
         li.appendChild(editForm);
 
-        // Focus input window right away
         setTimeout(() => textInput.focus(), 10);
       } else {
-        // RENDER STANDARD STATIC ITEM
         const contentDiv = document.createElement("div");
         contentDiv.className = "todo-content";
         contentDiv.addEventListener("click", () => toggleTodo(originalIndex));
@@ -265,9 +289,14 @@ function renderTodos() {
 
           let displayLabel = "";
           if (todo.startTime && todo.endTime) {
+            // Dynamic duration string calculation added inside render loop
+            const durationText = calculateDurationText(
+              todo.startTime,
+              todo.endTime
+            );
             displayLabel = `${formatTime12H(todo.startTime)} - ${formatTime12H(
               todo.endTime
-            )}`;
+            )} ${durationText}`;
           } else if (todo.startTime) {
             displayLabel = `Starts ${formatTime12H(todo.startTime)}`;
           } else {
@@ -284,7 +313,6 @@ function renderTodos() {
         const actionsWrapper = document.createElement("div");
         actionsWrapper.className = "actions-wrapper";
 
-        // New Edit Engine Trigger Button
         const editBtn = document.createElement("button");
         editBtn.className = "action-icon-btn edit-btn";
         editBtn.innerHTML = "✏️";
@@ -352,7 +380,7 @@ function addTodo() {
 
 function commitEdit(index, newText, newRawDate, newStart, newEnd) {
   const sanitizedText = newText.trim();
-  if (!sanitizedText) return; // Disallow completely empty task entries
+  if (!sanitizedText) return;
 
   todos[index].text = sanitizedText;
   todos[index].rawDate = newRawDate;
@@ -360,7 +388,7 @@ function commitEdit(index, newText, newRawDate, newStart, newEnd) {
   todos[index].startTime = newStart || null;
   todos[index].endTime = newEnd || null;
 
-  editingTodoId = null; // Close editor form state
+  editingTodoId = null;
   saveToLocalStorage();
   renderTodos();
 }
@@ -372,7 +400,6 @@ function toggleTodo(index) {
 }
 
 function deleteTodo(index) {
-  // Ensure we clear editing lock if deleting the currently edited task
   if (todos[index] && todos[index].id === editingTodoId) {
     editingTodoId = null;
   }
@@ -402,10 +429,7 @@ filterBtns.forEach(btn => {
   });
 });
 
-setDefaultDate();
-renderTodos();
-
-// --- QUICK CHECKLIST CONTROLLER ENGINE ---
+// --- QUICK CHECKLIST DRAWERS ENGINE ---
 const scratchToggle = document.getElementById("scratch-toggle");
 const scratchDrawer = document.getElementById("scratch-drawer");
 const scratchClose = document.getElementById("scratch-close");
@@ -415,7 +439,6 @@ const scratchListContainer = document.getElementById("scratch-list-container");
 
 let scratchItems = JSON.parse(localStorage.getItem("scratchpad_items")) || [];
 
-// Drawer Toggle Handlers
 scratchToggle.addEventListener("click", () =>
   scratchDrawer.classList.add("open")
 );
@@ -435,12 +458,11 @@ function renderScratchItems() {
     li.className = `scratch-item ${item.done ? "done" : ""}`;
 
     li.innerHTML = `
-            <input type="checkbox" ${item.done ? "checked" : ""}>
-            <span>${item.text}</span>
-            <button class="scratch-delete">&times;</button>
-        `;
+                    <input type="checkbox" ${item.done ? "checked" : ""}>
+                    <span>${item.text}</span>
+                    <button class="scratch-delete">&times;</button>
+                `;
 
-    // Toggle item status
     li.querySelector("input").addEventListener("change", () => {
       scratchItems[idx].done = !scratchItems[idx].done;
       saveScratchData();
@@ -453,7 +475,6 @@ function renderScratchItems() {
       renderScratchItems();
     });
 
-    // Delete item line
     li.querySelector(".scratch-delete").addEventListener("click", () => {
       scratchItems.splice(idx, 1);
       saveScratchData();
@@ -480,6 +501,7 @@ scratchInput.addEventListener("keypress", e => {
   if (e.key === "Enter") addScratchItem();
 });
 
-// Run initial scratchpad paint routine
+// App Initializations
+setDefaultDate();
+renderTodos();
 renderScratchItems();
-  
